@@ -1,0 +1,27 @@
+---
+dependencies:
+  - build-essential
+  - cmake
+  - git
+  - pkg-config
+  - libjpeg8-dev
+  - libtiff5-dev
+  - libjasper-dev
+  - libpng12-dev
+  - libgtk2.0-dev
+  - libavcodec-dev
+  - libavformat-dev
+  - libswscale-dev
+  - libv4l-dev
+  - libatlas-base-dev
+  - libopenexr-dev
+  - gfortran
+
+repo_url: "https://github.com/opencv/opencv.git"
+src_dir: "{{ ansible_env.HOME }}/src/opencv"
+
+contrib_repo_url: "https://github.com/opencv/opencv_contrib.git"
+contrib_src_dir: "{{ ansible_env.HOME }}/src/opencv_contrib"
+
+cmake_options: "-DCMAKE_BUILD_TYPE=RELEASE  -DINSTALL_C_EXAMPLES=OFF -DINSTALL_PYTHON_EXAMPLES=ON -DOPENCV_EXTRA_MODULES_PATH={{ contrib_src_dir }}/modules -DBUILD_EXAMPLES=ON" 
+

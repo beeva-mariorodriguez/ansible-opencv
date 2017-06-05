@@ -1,0 +1,48 @@
+---
+- name: "mkdir src dir"
+  file:
+    path: "{{ src_dir }}"
+    state: "directory"
+
+- name: "clone opencv repo"
+  git:
+    repo: "{{ repo_url }}"
+    dest: "{{ src_dir }}"
+    force: "yes"
+    version: "{{ version }}"
+
+- name: "clone opencv contrib repo"
+  git:
+    repo: "{{ contrib_repo_url }}"
+    dest: "{{ contrib_src_dir }}"
+    force: "yes"
+    version: "{{ version }}"
+
+# ugly hack
+- name: "fix python build for version 3.1.0"
+  blockinfile:
+    dest: "{{ src_dir }}/modules/python/common.cmake"
+    marker: "########## ansible"
+    content: |
+      find_package(HDF5)
+      include_directories(${HDF5_INCLUDE_DIRS})
+  when: version == "3.1.0"
+
+- name: "mkdir build"
+  file:
+    path: "{{ src_dir }}/build"
+    state: "directory"
+
+- name: "cmake"
+  shell: "cmake {{ cmake_options }} -DCMAKE_INSTALL_PREFIX={{ install_prefix }} .."
+  args:
+    chdir: "{{ src_dir }}/build"
+    creates: "{{src_dir }}/build/Makefile"
+
+- name: "make"
+  make:
+    chdir: "{{ src_dir }}/build"
+    target: "all"
+    params:
+      NUM_THREADS: "{{ ansible_processor_vcpus }}"
+

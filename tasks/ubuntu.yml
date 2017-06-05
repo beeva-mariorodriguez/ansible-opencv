@@ -1,0 +1,18 @@
+---
+- block:
+  - name: "uninstall distro packages"
+    apt:
+      name: "{{ item }}"
+      state: "absent"
+    with_items:
+      - "libopencv-dev"
+
+  - name: "install dependencies"
+    apt:
+      name: "{{ item }}"
+      state: "present"
+      update_cache: "yes"
+    with_items: "{{ dependencies }}"
+
+  become: true
+

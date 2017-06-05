@@ -1,0 +1,6 @@
+---
+version: "3.2.0"
+install_prefix: "/usr/local"
+reinstall: False
+delete_sources: False
+
