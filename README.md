@@ -33,7 +33,8 @@ Including an example of how to use your role (for instance, with variables passe
 Versions Tested
 ---------------
 
-* 3.1.0 OK
+* 3.1.0 does not compile with CUDA
+* 3.2.0 OK
 
 License
 -------
