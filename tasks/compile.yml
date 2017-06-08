@@ -39,10 +39,9 @@
     chdir: "{{ src_dir }}/build"
     creates: "{{src_dir }}/build/Makefile"
 
+# ansible make module does not support "-j"
 - name: "make"
-  make:
+  shell: "make all -j {{ ansible_processor_vcpus * 2 }}"
+  args:
     chdir: "{{ src_dir }}/build"
-    target: "all"
-    params:
-      NUM_THREADS: "{{ ansible_processor_vcpus }}"
 
